@@ -11,19 +11,9 @@ Bittrex.config do |c|
   c.secret = ENV['BITTREX_SECRET_KEY']
 end
 
-# Extract non-zero balance 
-def get_non_zero_wallet(my_wallet)
-  my_wallet.delete_if do |coin|
-    if coin.balance == 0
-      true
-    else
-      false
-    end
-  end
-  my_wallet
-end
-
-my_wallet = get_non_zero_wallet(Bittrex::Wallet.all)
+my_wallet = Bittrex::Wallet.all
+# Extract non-zero balance only
+my_wallet.delete_if { |coin| coin.balance == 0 }
 puts "Your current wallet: #{my_wallet}\n"
 
 # Calls Bittrex API per minute
